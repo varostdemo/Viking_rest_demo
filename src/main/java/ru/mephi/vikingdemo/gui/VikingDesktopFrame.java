@@ -73,13 +73,13 @@ public class VikingDesktopFrame extends JFrame {
     }
     
     private void onGenerate40() {
-        int count = vikingService.generate40RandomVikings(); // нужно добавить метод в VikingService
+        int count = vikingService.generate40RandomVikings();
         refreshTable();
         JOptionPane.showMessageDialog(this, "Создано " + count + " викингов");
     }
     
     private void refreshTable() {
-        tableModel.clear(); // нужно добавить метод clear()
+        tableModel.clear();
         vikingService.findAll().forEach(tableModel::addViking);
     }
     
@@ -100,7 +100,6 @@ public class VikingDesktopFrame extends JFrame {
         List<Integer> evenIds = analyticsService.getEvenIds();
 
         StringBuilder sb = new StringBuilder();
-        sb.append("=== STATISTICS ===\n\n");
         sb.append("Age > 30: ").append(ageGreater30).append("\n");
         sb.append("Age < 20: ").append(ageLess20).append("\n");
         sb.append("Age 25-35: ").append(ageBetween25_35).append("\n");
