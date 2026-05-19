@@ -15,7 +15,6 @@ public class VikingService {
     private final VikingFactory vikingFactory;
     private final VikingStorage vikingStorage;
     
-    
     @Autowired
     public VikingService(
             VikingFactory vikingFactory,
@@ -35,5 +34,14 @@ public class VikingService {
     }
     public void deleteById(int id) {
         vikingStorage.deleteById(id);
+    }
+    
+    public int generate40RandomVikings() {
+        java.util.stream.IntStream.range(0, 40)
+                .forEach(i -> {
+                    Viking viking = vikingFactory.createRandomViking();
+                    vikingStorage.save(viking);
+                });
+        return 40;
     }
 }
