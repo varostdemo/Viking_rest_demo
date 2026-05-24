@@ -1,10 +1,10 @@
 package ru.mephi.vikingdemo.service;
 
+import java.util.ArrayList;
 import org.springframework.stereotype.Service;
 import ru.mephi.vikingdemo.model.Viking;
 
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.mephi.vikingdemo.repository.VikingStorage;
 
@@ -36,12 +36,9 @@ public class VikingService {
         vikingStorage.deleteById(id);
     }
     
-    public int generate40RandomVikings() {
-        java.util.stream.IntStream.range(0, 40)
-                .forEach(i -> {
-                    Viking viking = vikingFactory.createRandomViking();
-                    vikingStorage.save(viking);
-                });
-        return 40;
+    public List<Viking> generateManyRandomVikings(int count) {
+        ArrayList<Viking> newVikings = vikingFactory.createRandomVikingMany(count);
+        newVikings.forEach(vikingStorage::save);
+        return newVikings;
     }
 }

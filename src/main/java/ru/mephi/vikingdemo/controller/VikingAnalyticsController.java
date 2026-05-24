@@ -16,6 +16,7 @@ import ru.mephi.vikingdemo.model.HairColor;
 import ru.mephi.vikingdemo.model.Viking;
 import ru.mephi.vikingdemo.service.VikingAnalyticsService;
 import java.util.List;
+import ru.mephi.vikingdemo.service.VikingService;
 
 @RestController
 @RequestMapping("/api/analytics")
@@ -23,9 +24,11 @@ import java.util.List;
 public class VikingAnalyticsController {
 
     private final VikingAnalyticsService analyticsService;
+    private final VikingService vikingService;
 
-    public VikingAnalyticsController(VikingAnalyticsService analyticsService) {
+    public VikingAnalyticsController(VikingAnalyticsService analyticsService, VikingService vikingService) {
         this.analyticsService = analyticsService;
+        this.vikingService = vikingService;
     }
 
     @GetMapping("/count/age/greater/{age}")
@@ -53,9 +56,9 @@ public class VikingAnalyticsController {
         return analyticsService.countByBeardStyleAndHairColor(beard, hair);
     }
 
-    @GetMapping("/count/axes/{count}")
-    public long countByAxes(@PathVariable int count) {
-        return analyticsService.countByAxesCount(count);
+    @GetMapping("/axes-statistics")
+    public String getAxesStatistics() {
+        return analyticsService.getAxesStatistics();
     }
 
     @GetMapping("/random-tall")
@@ -79,13 +82,13 @@ public class VikingAnalyticsController {
     }
 
     @GetMapping("/even-ids")
-    public List<Integer> getEvenIds() {
+    public Integer[] getEvenIds() {
         return analyticsService.getEvenIds();
     }
 
     @PostMapping("/generate40")
     public String generate40Vikings() {
-        int count = analyticsService.generate40RandomVikings();
-        return "Сгенерировано " + count + " викингов";
+        List<Viking> newVikings = vikingService.generateManyRandomVikings(40);
+        return "Сгенерировано " + newVikings.size() + " викингов";
     }
 }

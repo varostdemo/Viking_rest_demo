@@ -8,6 +8,7 @@ package ru.mephi.vikingdemo.service;
  *
  * @author admin
  */
+import java.util.Arrays;
 import org.springframework.stereotype.Service;
 import ru.mephi.vikingdemo.model.BeardStyle;
 import ru.mephi.vikingdemo.model.EquipmentItem;
@@ -59,10 +60,16 @@ public class VikingAnalyticsService {
                 .count();
     }
 
-    public long countByAxesCount(int targetCount) {
-        return vikingService.findAll().stream()
-                .filter(v -> countAxes(v.equipment()) == targetCount)
+    public String getAxesStatistics() {
+        long oneAxe = vikingService.findAll().stream()
+                .filter(v -> countAxes(v.equipment()) == 1)
                 .count();
+
+        long twoAxes = vikingService.findAll().stream()
+                .filter(v -> countAxes(v.equipment()) == 2)
+                .count();
+
+        return "Викингов с 1 топором: " + oneAxe + ", с 2 топорами: " + twoAxes;
     }
 
     private long countAxes(List<EquipmentItem> equipment) {
@@ -97,22 +104,23 @@ public class VikingAnalyticsService {
 
     
     public Integer getMaxId() {
-        List<Integer> ids = vikingService.findAll().stream()
-                .map(v -> v.id())
-                .toList();
-        return ids.stream().max(Integer::compareTo).orElse(null);
+        Integer[] ids = vikingService.findAll().stream()
+                .map(Viking::id)
+                .toArray(Integer[]::new);
+
+        return Arrays.stream(ids)
+                .max(Integer::compareTo)
+                .orElse(null);
     }
 
-    public List<Integer> getEvenIds() {
-        return vikingService.findAll().stream()
-                .map(v -> v.id())
+    public Integer[] getEvenIds() {
+        Integer[] ids = vikingService.findAll().stream()
+                .map(Viking::id)
+                .toArray(Integer[]::new);
+
+        return Arrays.stream(ids)
                 .filter(id -> id % 2 == 0)
-                .toList();
+                .toArray(Integer[]::new);
     }
 
-    public int generate40RandomVikings() {
-        java.util.stream.IntStream.range(0, 40)
-                .forEach(i -> vikingService.createRandomViking());
-        return 40;
-    }
 }
