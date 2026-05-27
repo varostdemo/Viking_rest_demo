@@ -57,7 +57,7 @@ public class VikingAnalyticsController {
     }
 
     @GetMapping("/axes-statistics")
-    public String getAxesStatistics() {
+    public long getAxesStatistics() {
         return analyticsService.getAxesStatistics();
     }
 

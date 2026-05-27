@@ -60,21 +60,14 @@ public class VikingAnalyticsService {
                 .count();
     }
 
-    public String getAxesStatistics() {
-        long oneAxe = vikingService.findAll().stream()
-                .filter(v -> countAxes(v.equipment()) == 1)
-                .count();
-
-        long twoAxes = vikingService.findAll().stream()
-                .filter(v -> countAxes(v.equipment()) == 2)
-                .count();
-
-        return "Викингов с 1 топором: " + oneAxe + ", с 2 топорами: " + twoAxes;
-    }
-
-    private long countAxes(List<EquipmentItem> equipment) {
-        return equipment.stream()
-                .filter(item -> item.name().equalsIgnoreCase("axe"))
+    public long getAxesStatistics() {
+        return vikingService.findAll().stream()
+                .filter(v -> {
+                    long axes = v.equipment().stream()
+                            .filter(eq -> eq.name().toLowerCase().contains("axe"))
+                            .count();
+                    return axes == 1 || axes == 2;
+                })
                 .count();
     }
 

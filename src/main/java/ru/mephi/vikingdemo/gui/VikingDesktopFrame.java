@@ -90,7 +90,7 @@ public class VikingDesktopFrame extends JFrame {
         long ageBetween25_35 = analyticsService.countByAgeBetween(25, 35);
         long ageOutside18_40 = analyticsService.countByAgeOutside(18, 40);
         long braidedRed = analyticsService.countByBeardStyleAndHairColor(BeardStyle.BRAIDED, HairColor.Red);
-        String axesStats = analyticsService.getAxesStatistics();
+        long axesStats = analyticsService.getAxesStatistics();
 
         Viking randomTall = analyticsService.getRandomVikingTallerThan180();
         List<Viking> legendaryVikings = analyticsService.getVikingsWithLegendaryGear();
